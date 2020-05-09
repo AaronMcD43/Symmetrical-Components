@@ -15,6 +15,13 @@ def deg_car(mag, ang):
     return(complex(x, y))
 
 
+def plotting(xs, ys, x, y, c):
+    plt.quiver(xs, ys, x, y, angles='xy', scale_units='xy',
+               scale=1, width=0.005, color=c)
+    plt.xlim(-2, 2)
+    plt.ylim(-2, 2)
+    
+#calling the function to convert the phase values from degrees to cartesian co-ordinates
 phaseAcar = deg_car(phaseA[0], phaseA[1])
 phaseBcar = deg_car(phaseB[0], phaseB[1])
 phaseCcar = deg_car(phaseC[0], phaseC[1])
@@ -39,25 +46,16 @@ sys = np.array([[deg_car(phaseA[0], phaseA[1])],
 # calculated symmetrical components
 sym = Ainv.dot(sys)  
 
-# Plotting phase A, B & C
-plt.quiver(0, 0, phaseAcar.real, phaseAcar.imag, angles='xy',
-           scale_units='xy', scale=1, width=0.005, color="red")
-plt.quiver(0, 0, phaseBcar.real, phaseBcar.imag, angles='xy',
-           scale_units='xy', scale=1, color="yellow")
-plt.quiver(0, 0, phaseCcar.real, phaseCcar.imag, angles='xy',
-           scale_units='xy', scale=1, color="blue")
 
-#Plotting the positve, negative and zero sequence components for phase A
-plt.quiver(0, 0, sym[1].real, sym[1].imag, angles='xy',
-           scale_units='xy', scale=1, width=0.003)
-plt.quiver(sym[1].real, sym[1].imag, sym[2].real, sym[2].imag, angles='xy',
-           scale_units='xy', scale=1, width=0.003)
-plt.quiver(sym[2].real+sym[1].real, sym[2].imag+sym[1].imag, sym[0].real, sym[0].imag, angles='xy',
-           scale_units='xy', scale=1, width=0.003)
+plotting(0, 0, phaseAcar.real, phaseAcar.imag, 'red')
+plotting(0, 0, phaseBcar.real, phaseBcar.imag, 'yellow')
+plotting(0, 0, phaseCcar.real, phaseCcar.imag, 'blue')
 
+plotting(0, 0, sym[1].real, sym[1].imag, 'black')
+plotting(sym[1].real, sym[1].imag, sym[2].real, sym[2].imag, 'black')
+plotting(sym[2].real+sym[1].real, sym[2].imag+sym[1].imag,
+         sym[0].real, sym[0].imag, 'black')
 
-plt.xlim(-2, 2)
-plt.ylim(-2, 2)
 
 plt.show()
 
