@@ -20,6 +20,12 @@ def plotting(xs, ys, x, y, c):
                scale=1, width=0.005, color=c)
     plt.xlim(-2, 2)
     plt.ylim(-2, 2)
+
+def car_deg(x,y):
+    cn = complex(x,y)
+    a = abs(cn)
+    b = np.angle(cn, deg = True)
+    return (a,b)
     
 #calling the function to convert the phase values from degrees to cartesian co-ordinates
 phaseAcar = deg_car(phaseA[0], phaseA[1])
@@ -46,19 +52,39 @@ sys = np.array([[deg_car(phaseA[0], phaseA[1])],
 # calculated symmetrical components
 sym = Ainv.dot(sys)  
 
+I0A = sym[0]
+I1A = sym[1]
+I2A = sym[2]
+I0B = I0A
+I1B = I1A * a2
+I2B = I2A * a
+I0C = I0A
+I1C = I1A * a
+I2C = I2A * a2
+
+
 
 plotting(0, 0, phaseAcar.real, phaseAcar.imag, 'red')
 plotting(0, 0, phaseBcar.real, phaseBcar.imag, 'yellow')
 plotting(0, 0, phaseCcar.real, phaseCcar.imag, 'blue')
 
-plotting(0, 0, sym[1].real, sym[1].imag, 'black')
-plotting(sym[1].real, sym[1].imag, sym[2].real, sym[2].imag, 'black')
-plotting(sym[2].real+sym[1].real, sym[2].imag+sym[1].imag,
-         sym[0].real, sym[0].imag, 'black')
+plotting(0, 0, I1A.real, I1A.imag, 'black')
+plotting(I1A.real, I1A.imag, I2A.real, I2A.imag, 'black')
+plotting(I2A.real + I1A.real, I2A.imag + I1A.imag,
+         I0A.real, I0A.imag, 'black')
+
+plotting(0, 0, I1B.real, I1B.imag, 'black')
+plotting(I1B.real, I1B.imag, I2B.real, I2B.imag, 'black')
+plotting(I2B.real + I1B.real, I2B.imag + I1B.imag,
+         I0B.real, I0B.imag, 'black')
+
+plotting(0, 0, I1C.real, I1C.imag, 'black')
+plotting(I1C.real, I1C.imag, I2C.real, I2C.imag, 'black')
+plotting(I2C.real + I1C.real, I2C.imag + I1C.imag,
+         I0C.real, I0C.imag, 'black')
 
 
 plt.show()
 
-print(sym[0])
-print(sym[1])
-print(sym[2])
+
+
